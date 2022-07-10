@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from collections import defaultdict
 # 인풋모양으로 바꿔주는 함수
-def preprocess(df):
+def preprocess_df(df):
     db = defaultdict(list)
     n_db = defaultdict(list)
     for item in df.itertuples():
@@ -23,5 +23,10 @@ def preprocess(df):
 
 # 정규화진행해주는 함수
 def normalization_df(df):
+    mean = df.mean(axis=0, skipna=False)
+    std = df.std()
+    for col in df.columns:
+        if col != 'GRADE':
+            df[col] = (df[col] - mean[col]) / std[col]
 
-    return df
+    return df, mean, std
