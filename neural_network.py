@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
+from collections import defaultdict
 from tqdm import tqdm
-np.random.seed(42)
-
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
@@ -27,8 +26,13 @@ class neuralnetwork:
         self.b2 = np.random.rand(5)
         self.b3 = np.random.rand(10)
 
+    def xavier_initialization(self):
+        self.w1 = np.random.randn(6, 5) / np.sqrt(1/6)
+        self.w2 = np.random.randn(5, 5) / np.sqrt(1/5)
+        self.w3 = np.random.randn(5, 10) / np.sqrt(1/5)
+
     def train(self, X, y, lr, epochs):
-        output = []
+        output = defaultdict(list)
         for epoch in tqdm(range(epochs)):
             total_loss = 0
             for idx in range(len(X)):
@@ -68,11 +72,30 @@ class neuralnetwork:
                 self.w1 -= lr*deriv_1
                 self.b1 -= lr*(de_dz1) 
 
-            output.append((total_loss/len(X), epoch))
-        return output
+            output['loss'].append(total_loss/len(X))
+            output['epoch'].append(epoch+1)
+        return pd.DataFrame(output)
 
 
+    def predict(self, X, y, **kwargs):
+        pred_top3 = defaultdict(list)
+        pred_detail = defaultdict(list)
 
+        for idx in range(len(X)):
+            inp = np.array(X.iloc[idx])
+            h1 = inp.dot(self.w1) + self.b1
+            h2 = sigmoid(h1).dot(self.w2) + self.b2
+            o = h2.dot(self.w3) + self.b3
+            y_pred = softmax(o)
+            sort_y_pred = y_pred.argsort()[::-1][:3]
+            sort_y_pred += 1
+            TEAM = kwargs["TEAM"].iloc[idx]
+            pred_top3[TEAM] = sort_y_pred
+            pred_detail[TEAM] = y_pred
 
+        pred_top3 = pd.DataFrame(pred_top3)
+        pred_detail = pd.DataFrame(pred_detail)
+        pred_top3.index = range(1, 4)
+        pred_detail.index = range(1, 11)
 
-    
+        return pred_top3, pred_detail

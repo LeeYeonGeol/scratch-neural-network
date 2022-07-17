@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from collections import defaultdict
-# 인풋모양으로 바꿔주는 함수
+# X 전처리 함수
 def preprocess_X(X):
     db = defaultdict(list)
     n_db = defaultdict(list)
@@ -18,15 +18,21 @@ def preprocess_X(X):
  
     return pd.DataFrame(n_db)
 
+# y 전처리 함수
 def preprocess_y(y):
     y.dropna(inplace=True)
 
     return y
 
 # 스케일링 진행해주는 함수
-def standard_X(X):
-    mean = X.mean(axis=0, skipna=False)
-    std = X.std()
+def standard_X(X, **kwargs):
+    mean, std = 0, 0
+    if not kwargs:
+        mean = X.mean(axis=0, skipna=False)
+        std = X.std()
+    else:
+        mean = kwargs["mean"]
+        std = kwargs["std"]
     for col in X.columns:
         X[col] = (X[col] - mean[col]) / std[col]
 
