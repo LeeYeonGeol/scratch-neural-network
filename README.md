@@ -9,10 +9,29 @@
 - Output: 등수에 대한 예측 확률이 원-핫 벡터 형태로 나옵니다.
 
 ## 3. Neural-Network
-하나의 인풋 레이어와 두 개의 히든 레이어와 하나의 아웃풋 레이어로 구성되어 있습니다.
+### 구조도
+<img src="assets/architecture.PNG" width=80%>
+
+- Input Layer: 1개
+- Hidden Layer: 2개
+- Output Layer: 1개
+  
+6개의 값이 Input Layer로 들어와서 2개의 Hidden Layer를 거치고 softmax 연산을 통해, 최종 로짓값이 생성됩니다.
+
+
+### Hyper Parameter
+- learning Rate: 0.01
+- epoch: 829
+- loss function: Cross Entrophy
 
 ## 4. Result
+### 학습과정
 <img src="assets/loss_graph_1.PNG" width=60%>
 
 ## More Information
+
+
 ## Reference
+### 역전파 구현
+- https://towardsdatascience.com/deriving-backpropagation-with-cross-entropy-loss-d24811edeaf9
+- https://www.mldawn.com/back-propagation-with-cross-entropy-and-softmax/

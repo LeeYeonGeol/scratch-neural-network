@@ -11,7 +11,7 @@ np.set_printoptions(precision=2, suppress=True)
 pd.options.display.float_format = '{:.3f}'.format
 
 # 훈련 데이터 로드
-train_data = pd.read_csv("data/KBO_DATA.csv")
+train_data = pd.read_csv("data/KBO_TRAIN.csv")
 
 # 전처리
 X_train, y_train = train_data.drop('GRADE', axis=1), train_data['GRADE']
