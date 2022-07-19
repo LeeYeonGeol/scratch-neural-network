@@ -55,7 +55,7 @@ python main.py
 ```
 
 ## 6. More Information
-- TODO
+- [블로그 링크](https://lottegiantsv3.tistory.com/108)
 
 ## Reference
 CE loss & softmax 역전파 미분 증명
